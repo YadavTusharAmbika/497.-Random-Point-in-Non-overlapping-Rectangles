@@ -1,1 +1,35 @@
+class Solution {
+public:
+    vector<vector<int>> rects;
+    vector<long long> prefix;
+    long long total = 0;
+
+    Solution(vector<vector<int>>& rects) {
+        this->rects = rects;
+
+        for (auto &r : rects) {
+            long long points =
+                (long long)(r[2] - r[0] + 1) *
+                (long long)(r[3] - r[1] + 1);
+            total += points;
+            prefix.push_back(total);
+        }
+    }
+
+    vector<int> pick() {
+        // Step 1: Pick random point index
+        long long k = rand() % total;
+
+        // Step 2: Binary search rectangle
+        int idx = upper_bound(prefix.begin(), prefix.end(), k)
+                  - prefix.begin();
+
+        // Step 3: Pick random point in rectangle
+        auto &r = rects[idx];
+        int x = r[0] + rand() % (r[2] - r[0] + 1);
+        int y = r[1] + rand() % (r[3] - r[1] + 1);
+
+        return {x, y};
+    }
+};
 
